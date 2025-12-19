@@ -1,0 +1,22 @@
+name: "docker-build-push-postgres-patroni-16"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    uses: ./.github/workflows/docker-build-push.yml
+    with:
+      WORKING_DIR: patroni-postgres/16
+      IMAGE_NAME: tuana9a/patroni-postgres-16
+      tag-commithash: true
+      tag-monthly: true
+      tag-daily: true
+      tag-secondly: true
+      push: true
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
