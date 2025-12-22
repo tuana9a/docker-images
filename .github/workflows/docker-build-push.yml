@@ -125,7 +125,7 @@ jobs:
           esac
           echo NOTI_MSG="$status \`$run_name\` \`${{ inputs.IMAGE_NAME }}\` \`${{ env.IMAGE_TAGS }}\` $run_url" > $GITHUB_ENV
 
-      - name: Send Discord notification
+      - name: notify-discord
         if: ${{ env.DISCORD_WEBHOOK != '' }}
         run: |
           curl -X POST \
@@ -133,7 +133,7 @@ jobs:
             -d "{\"content\":\"${NOTI_MSG}\"}" \
             "${{ env.DISCORD_WEBHOOK }}"
 
-      - name: Send Telegram notification
+      - name: notify-telegram
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
         run: |
           curl -X POST "https://api.telegram.org/bot${{ env.TELEGRAM_BOT_TOKEN }}/sendMessage" \
