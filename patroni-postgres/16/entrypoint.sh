@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 if [[ $UID -ge 10000 ]]; then
     GID=$(id -g)
     sed -e "s/^postgres:x:[^:]*:[^:]*:/postgres:x:$UID:$GID:/" /etc/passwd > /tmp/passwd
@@ -7,32 +9,19 @@ if [[ $UID -ge 10000 ]]; then
     rm /tmp/passwd
 fi
 
-cat > /home/postgres/patroni.yml <<__EOF__
-bootstrap:
-  dcs:
-    postgresql:
-      use_pg_rewind: true
-      pg_hba:
-      - host all all 0.0.0.0/0 md5
-      - host replication ${PATRONI_REPLICATION_USERNAME} ${PATRONI_KUBERNETES_POD_IP}/16 md5
-      - host replication ${PATRONI_REPLICATION_USERNAME} 127.0.0.1/32 md5
-  initdb:
-  - auth-host: md5
-  - auth-local: trust
-  - encoding: UTF8
-  - locale: en_US.UTF-8
-  - data-checksums
-restapi:
-  connect_address: '${PATRONI_KUBERNETES_POD_IP}:8008'
-postgresql:
-  connect_address: '${PATRONI_KUBERNETES_POD_IP}:5432'
-  authentication:
-    superuser:
-      password: '${PATRONI_SUPERUSER_PASSWORD}'
-    replication:
-      password: '${PATRONI_REPLICATION_PASSWORD}'
-__EOF__
+patroni_yml="/home/postgres/patroni.yml"
+patroni_yml_tmpl="/home/postgres/patroni.yml.tmpl"
+
+if [ ! -f "$patroni_yml" ]; then
+    echo "File $patroni_yml not found. Copying from template..."    
+    cp "$patroni_yml_tmpl" "$patroni_yml"
+fi
+
+sed -i "s|\${PATRONI_REPLICATION_USERNAME}|$PATRONI_REPLICATION_USERNAME|g" "$patroni_yml"
+sed -i "s|\${PATRONI_REPLICATION_PASSWORD}|$PATRONI_REPLICATION_PASSWORD|g" "$patroni_yml"
+sed -i "s|\${PATRONI_SUPERUSER_PASSWORD}|$PATRONI_SUPERUSER_PASSWORD|g" "$patroni_yml"
+sed -i "s|\${PATRONI_KUBERNETES_POD_IP}|$PATRONI_KUBERNETES_POD_IP|g" "$patroni_yml"
 
 unset PATRONI_SUPERUSER_PASSWORD PATRONI_REPLICATION_PASSWORD
 
-exec /usr/bin/python3 /usr/local/bin/patroni /home/postgres/patroni.yml
+exec /usr/bin/python3 /usr/local/bin/patroni $patroni_yml

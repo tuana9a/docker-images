@@ -1,5 +1,7 @@
 # REF: https://github.com/patroni/patroni/blob/3e3a4e134699154eb6fa8fc63f5d54d8256f1536/kubernetes/Dockerfile
-FROM postgres:16
+
+# postgres:16.11
+FROM postgres@sha256:d4c3314b2dd74ff23cd6cd07e4d7e737cb6ef791c22a7cbd744cfbfb4815df72
 LABEL maintainer="Nguyen Minh Tuan <tuana9a@gmail.com>"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -25,6 +27,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /root/.cache
 
+COPY patroni.yml.tmpl /home/postgres/patroni.yml.tmpl
 COPY entrypoint.sh /
 
 EXPOSE 5432 8008
