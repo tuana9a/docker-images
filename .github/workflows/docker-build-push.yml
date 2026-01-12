@@ -120,8 +120,8 @@ jobs:
         if: ${{ always() }}
         run: |
           case "$ruok" in
-            "yes") status="OK" ;;
-            *) status="FUCK" ;;
+            "yes") status="ok" ;;
+            *) status="fuck" ;;
           esac
           echo NOTI_MSG="$status $run_name ${{ env.IMAGE_TAGS }} $run_url" > $GITHUB_ENV
 
