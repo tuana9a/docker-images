@@ -120,10 +120,10 @@ jobs:
         if: ${{ always() }}
         run: |
           case "$ruok" in
-            "yes") status=":white_check_mark:" ;;
-            *) status=":x:" ;;
+            "yes") status="OK" ;;
+            *) status="FUCK" ;;
           esac
-          echo NOTI_MSG="$status \`$run_name\` \`${{ inputs.IMAGE_NAME }}\` \`${{ env.IMAGE_TAGS }}\` $run_url" > $GITHUB_ENV
+          echo NOTI_MSG="$status $run_name ${{ env.IMAGE_TAGS }} $run_url" > $GITHUB_ENV
 
       - name: notify-discord
         if: ${{ env.DISCORD_WEBHOOK != '' }}
