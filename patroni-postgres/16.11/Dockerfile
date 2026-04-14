@@ -1,7 +1,7 @@
-# REF: https://github.com/patroni/patroni/blob/3e3a4e134699154eb6fa8fc63f5d54d8256f1536/kubernetes/Dockerfile
+# Ref: https://github.com/patroni/patroni/blob/3e3a4e134699154eb6fa8fc63f5d54d8256f1536/kubernetes/Dockerfile
 
 # postgres:16.11
-FROM postgres@sha256:d4c3314b2dd74ff23cd6cd07e4d7e737cb6ef791c22a7cbd744cfbfb4815df72
+FROM postgres@sha256:468e1f126ca5af849799cda06ac9b03d8090aae9fa5163408b3e8da44fad0702
 LABEL maintainer="Nguyen Minh Tuan <tuana9a@gmail.com>"
 
 RUN export DEBIAN_FRONTEND=noninteractive \

@@ -1,14 +1,18 @@
-name: "docker-build-push-postgres-patroni-16"
+name: "docker-build-push-postgres-patroni"
 
 on:
   workflow_dispatch:
+    inputs:
+      pg-version:
+        required: true
+        description: "pg version, match folder name at ./patroni-postgres, examples: 16.11"
 
 jobs:
   main:
     uses: ./.github/workflows/docker-build-push.yml
     with:
-      WORKING_DIR: patroni-postgres/16
-      IMAGE_NAME: tuana9a/patroni-postgres-16
+      WORKING_DIR: patroni-postgres/${{ inputs.pg-version }}
+      IMAGE_NAME: tuana9a/patroni-postgres-${{ inputs.pg-version }}
       tag-commithash: true
       tag-monthly: true
       tag-daily: true
