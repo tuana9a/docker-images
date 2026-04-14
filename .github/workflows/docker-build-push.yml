@@ -139,7 +139,7 @@ jobs:
             *) status="fuck" ;;
           esac
 
-          echo NOTI_MSG="$status $run_name ${{ env.IMAGE_TAGS }} $run_url" > $GITHUB_ENV
+          export NOTI_MSG="$status $run_name ${{ env.IMAGE_TAGS }} $run_url" > $GITHUB_ENV
 
           if [[ ! -z "$DISCORD_WEBHOOK" ]]; then
             curl -X POST "${{ env.DISCORD_WEBHOOK }}" \
