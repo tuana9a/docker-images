@@ -76,9 +76,9 @@ jobs:
           echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
           echo "FULL_COMMIT_HASH=${{ github.sha }}" >> "$GITHUB_ENV"
           echo "SHORT_COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)" >> "$GITHUB_ENV"
-          echo TAG_MONTHLY=$(date +"%Y.%m") >> $GITHUB_ENV
-          echo TAG_DAILY=$(date +"%Y.%m.%d") >> $GITHUB_ENV
-          echo TAG_SECONDLY=$(date +"%Y.%m.%d.%H%M%S") >> $GITHUB_ENV
+          echo "TAG_MONTHLY=$(date +"%Y.%m")" >> $GITHUB_ENV
+          echo "TAG_DAILY=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
+          echo "TAG_SECONDLY=$(date +"%Y.%m.%d.%H%M%S")" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
       - name: tag-latest
@@ -120,6 +120,12 @@ jobs:
           tags: ${{ env.IMAGE_TAGS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - uses: snyk/actions/setup@master
+      - name: snyk container test
+        run: snyk container test --severity-threshold=high ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}$TAG_MONTHLY
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - id: ruok
         run: echo 'ruok=yes' >> $GITHUB_ENV
