@@ -1,4 +1,4 @@
-name: docker-build-push
+name: docker-build-push-scan
 
 on:
   workflow_call:
@@ -63,7 +63,7 @@ env:
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
 jobs:
-  build-and-push:
+  build-push-scan:
     runs-on: ${{ inputs.runs-on }}
     steps:
       - name: checkout

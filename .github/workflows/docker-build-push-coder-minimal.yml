@@ -5,7 +5,7 @@ on:
 
 jobs:
   main:
-    uses: ./.github/workflows/docker-build-push.yml
+    uses: ./.github/workflows/docker-build-push-scan.yml
     with:
       WORKING_DIR: coder
       DOCKERFILE_NAME: minimal.Dockerfile

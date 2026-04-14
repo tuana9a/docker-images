@@ -9,7 +9,7 @@ on:
 
 jobs:
   main:
-    uses: ./.github/workflows/docker-build-push.yml
+    uses: ./.github/workflows/docker-build-push-scan.yml
     with:
       WORKING_DIR: patroni-postgres/${{ inputs.pg-version }}
       IMAGE_NAME: tuana9a/patroni-postgres-${{ inputs.pg-version }}
