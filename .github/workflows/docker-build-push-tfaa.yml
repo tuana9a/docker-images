@@ -1,17 +1,23 @@
-name: "docker-build-push-terraform-plan-apply-notify"
+name: "docker-build-push-tfaa"
 
 on:
   workflow_dispatch:
+    inputs:
+      scan:
+        type: string
+        required: false
+        default: "no"
 
 jobs:
   main:
     uses: ./.github/workflows/docker-build-push-scan.yml
     with:
-      WORKING_DIR: terraform-plan-apply-notify
-      IMAGE_NAME: tuana9a/terraform-plan-apply-notify
+      DOCKERFILE_NAME: tfaa.Dockerfile
+      IMAGE_NAME: tuana9a/tfaa
       tag-commithash: true
       tag-monthly: true
       tag-daily: true
       tag-secondly: true
       push: true
+      scan: "${{ inputs.scan == 'yes' }}"
     secrets: inherit

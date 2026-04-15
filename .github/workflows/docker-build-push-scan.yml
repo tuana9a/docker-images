@@ -9,7 +9,8 @@ on:
         default: "ubuntu-24.04"
       WORKING_DIR:
         type: string
-        required: true
+        required: false
+        default: "."
       DOCKERFILE_NAME:
         type: string
         required: false
