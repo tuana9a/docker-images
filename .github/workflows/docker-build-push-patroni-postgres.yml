@@ -4,8 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       pg-version:
+        type: string
         required: true
         description: "pg version, match folder name at ./patroni-postgres, examples: 16.11"
+      scan:
+        type: string
+        required: false
+        default: "no"
 
 jobs:
   main:
@@ -18,4 +23,5 @@ jobs:
       tag-daily: true
       tag-secondly: true
       push: true
+      scan: "${{ inputs.scan == 'yes' }}"
     secrets: inherit
