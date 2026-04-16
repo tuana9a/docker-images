@@ -79,16 +79,18 @@ jobs:
         run: |
           echo "run_name=${{ github.workflow }}" >> $GITHUB_ENV
           echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
           echo "FULL_COMMIT_HASH=${{ github.sha }}" >> "$GITHUB_ENV"
           echo "SHORT_COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)" >> "$GITHUB_ENV"
           echo "TAG_MONTHLY=$(date +"%Y.%m")" >> $GITHUB_ENV
           echo "TAG_DAILY=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-          echo "TAG_SECONDLY=$(date +"%Y.%m.%d.%H%M%S")" >> $GITHUB_ENV
+          echo "TAG_SECONDLY=$(date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
-      - name: tag-latest
+      - name: tag-default
         run: |
           echo IMAGE_TAGS=${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}latest >> $GITHUB_ENV
+          echo IMAGE_TAGS=${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}run-$RUN_ID >> $GITHUB_ENV
 
       - name: tag-commithash
         if: "${{ inputs.tag-commithash }}"
@@ -131,7 +133,7 @@ jobs:
 
       - name: snyk container test
         if: "${{ inputs.scan }}"
-        run: snyk container test --severity-threshold=high ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}$TAG_MONTHLY
+        run: snyk container test --severity-threshold=high ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}run-$RUN_ID
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
