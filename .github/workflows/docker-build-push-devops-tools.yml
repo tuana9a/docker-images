@@ -1,0 +1,17 @@
+name: "docker-build-push-devops-tools"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    uses: ./.github/workflows/docker-build-push-scan.yml
+    with:
+      DOCKERFILE_NAME: devops-tools.Dockerfile
+      IMAGE_NAME: tuana9a/devops-tools
+      tag-commithash: true
+      tag-monthly: true
+      tag-daily: true
+      tag-secondly: true
+      push: true
+    secrets: inherit
