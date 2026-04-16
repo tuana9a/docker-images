@@ -1,0 +1,17 @@
+name: "docker-build-push-etcd-defrag"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    uses: ./.github/workflows/docker-build-push-scan.yml
+    with:
+      DOCKERFILE_NAME: etcd-defrag.Dockerfile
+      IMAGE_NAME: tuana9a/etcd-defrag
+      tag-commithash: true
+      tag-monthly: true
+      tag-daily: true
+      tag-secondly: true
+      push: true
+    secrets: inherit
