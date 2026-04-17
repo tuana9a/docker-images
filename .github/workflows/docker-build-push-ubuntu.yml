@@ -1,0 +1,27 @@
+name: "docker-build-push-ubuntu"
+
+on:
+  workflow_dispatch:
+    inputs:
+      pg-version:
+        type: string
+        required: true
+        description: "pg version, match folder name at ./ubuntu, examples: 24.04"
+      scan:
+        type: string
+        required: false
+        default: "no"
+
+jobs:
+  main:
+    uses: ./.github/workflows/docker-build-push-scan.yml
+    with:
+      WORKING_DIR: ubuntu/${{ inputs.pg-version }}
+      IMAGE_NAME: tuana9a/ubuntu-${{ inputs.pg-version }}
+      tag-commithash: true
+      tag-monthly: true
+      tag-daily: true
+      tag-secondly: true
+      push: true
+      scan: "${{ inputs.scan == 'yes' }}"
+    secrets: inherit
