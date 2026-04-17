@@ -87,10 +87,13 @@ jobs:
           echo "TAG_SECONDLY=$(date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
-      - name: tag-default
+      - name: tag-latest
         run: |
-          echo IMAGE_TAGS=${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}latest >> $GITHUB_ENV
-          echo IMAGE_TAGS=${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}run-$RUN_ID >> $GITHUB_ENV
+          echo IMAGE_TAGS="${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}latest" >> $GITHUB_ENV
+
+      - name: tag-run-id
+        run: |
+          echo IMAGE_TAGS="$IMAGE_TAGS,${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG_PREFIX }}run-$RUN_ID" >> $GITHUB_ENV
 
       - name: tag-commithash
         if: "${{ inputs.tag-commithash }}"
