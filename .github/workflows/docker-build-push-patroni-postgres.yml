@@ -1,4 +1,4 @@
-name: "docker-build-push-postgres-patroni"
+name: "docker-build-push-patroni-postgres"
 
 on:
   workflow_dispatch:
