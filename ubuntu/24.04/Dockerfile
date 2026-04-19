@@ -4,4 +4,5 @@ RUN apt update && apt install -y \
     curl \
     wget \
     unzip \
+    jq \
     openssh-client
