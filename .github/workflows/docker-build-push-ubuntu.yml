@@ -3,10 +3,10 @@ name: "docker-build-push-ubuntu"
 on:
   workflow_dispatch:
     inputs:
-      pg-version:
+      ubuntu-version:
         type: string
         required: true
-        description: "pg version, match folder name at ./ubuntu, examples: 24.04"
+        description: "ubuntu version, match folder name at ./ubuntu, examples: 24.04"
       scan:
         type: string
         required: false
@@ -16,8 +16,8 @@ jobs:
   main:
     uses: ./.github/workflows/docker-build-push-scan.yml
     with:
-      WORKING_DIR: ubuntu/${{ inputs.pg-version }}
-      IMAGE_NAME: tuana9a/ubuntu-${{ inputs.pg-version }}
+      WORKING_DIR: ubuntu/${{ inputs.ubuntu-version }}
+      IMAGE_NAME: tuana9a/ubuntu-${{ inputs.ubuntu-version }}
       tag-commithash: true
       tag-monthly: true
       tag-daily: true
