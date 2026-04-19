@@ -33,3 +33,7 @@ RUN wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraf
     && mv terraform /tools/bin/ \
     && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && /tools/bin/terraform -v
+
+RUN curl -LO https://github.com/getsops/sops/releases/download/v3.12.2/sops-v3.12.2.linux.amd64 \
+    && mv sops-v3.12.2.linux.amd64 /tools/bin/sops \
+    && chmod +x /tools/bin/sops
